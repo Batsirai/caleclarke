@@ -24,23 +24,25 @@ const speakingPortraitImage = "/images/cale-hero.jpg";
     <SiteHeader />
     <Hero imageSrc={heroImage} />
   </div>
-  <KitNewsletter />
-  <PodcastSection />
-  <SpeakingSection imageSrc={speakingPortraitImage} />
-  <div class="page-shell">
-    <div class="page-grid">
-      <div class="page-main">
-        <AboutSection />
-        <InstituteSection />
-        <PilgrimagesSection />
+  <main id="main-content" tabindex="-1">
+    <KitNewsletter />
+    <PodcastSection />
+    <SpeakingSection imageSrc={speakingPortraitImage} />
+    <div class="page-shell">
+      <div class="page-grid">
+        <div class="page-main">
+          <AboutSection />
+          <InstituteSection />
+          <PilgrimagesSection />
+        </div>
+        <aside class="sidebar-col" aria-label="Patron">
+          <CardinalSidebar />
+        </aside>
       </div>
-      <aside class="sidebar-col" aria-label="Patron">
-        <CardinalSidebar />
-      </aside>
     </div>
-  </div>
-  <ContactForms />
-  <SiteFooter />
+    <ContactForms />
+    <SiteFooter />
+  </main>
 </BaseLayout>
 
 <script is:inline>

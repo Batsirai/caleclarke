@@ -273,9 +273,26 @@ const hasScript = Boolean(kitUid && scriptSrc && useScriptEmbed);
     cursor: pointer;
     min-height: 48px;
     margin-top: var(--space-xs);
+    transition:
+      background 0.2s ease,
+      transform 0.15s ease;
   }
 
   .kit-submit:hover {
     background: var(--color-accent-hover);
+  }
+
+  .kit-submit:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .kit-submit:active {
+    transform: translateY(1px);
+  }
+
+  .kit-embed :global(.formkit-submit:focus-visible) {
+    outline: 2px solid var(--color-accent) !important;
+    outline-offset: 3px !important;
   }
 </style>
