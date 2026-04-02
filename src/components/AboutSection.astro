@@ -1,0 +1,58 @@
+---
+const linkedInUrl =
+  import.meta.env.PUBLIC_LINKEDIN_URL?.trim() ||
+  "https://www.linkedin.com/in/cale-clarke-4636a12b/";
+---
+
+<section id="about" class="about-root" aria-labelledby="about-heading">
+  <h2 id="about-heading" class="section-title">About me</h2>
+  <div class="about-prose">
+    <p>
+      I’m <strong>Cale Clarke</strong> — Catholic broadcaster, podcaster, speaker, and writer. I explain and defend the Faith through Scripture. I founded <strong>The Faith Explained Institute</strong>.
+    </p>
+    <p>
+      I studied at St. Mary’s University and Tyndale Seminary, with postgraduate work alongside Dr. Craig A. Evans. I’m grateful for my years with Relevant Radio; today my focus is <em>The Cale Clarke Show</em>, speaking, pilgrimages, and this community. I live near Toronto with my wife, Patricia, and our daughter, Michaela.
+    </p>
+    <p class="about-linkedin">
+      <a href={linkedInUrl} rel="noopener noreferrer" target="_blank">
+        Venues, media, and experience — LinkedIn →
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .about-root {
+    scroll-margin-top: 80px;
+    padding-bottom: var(--space-xl);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    margin: 0 0 var(--space-md);
+    letter-spacing: -0.02em;
+  }
+
+  .about-prose p {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-ink-muted);
+    max-width: var(--prose-width);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  .about-prose strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .about-linkedin {
+    margin-top: var(--space-md) !important;
+  }
+
+  .about-linkedin a {
+    font-weight: 600;
+  }
+</style>

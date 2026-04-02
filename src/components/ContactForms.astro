@@ -1,0 +1,296 @@
+---
+/**
+ * Submissions go to FormSubmit → email inbox (PUBLIC_CONTACT_EMAIL, default cale@caleclarke.com).
+ * First-time setup: FormSubmit sends a confirmation link to that address once.
+ */
+const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL ?? "cale@caleclarke.com";
+const siteUrl = (import.meta.env.SITE ?? "https://caleclarke.com").replace(/\/$/, "");
+const formEndpoint = `https://formsubmit.co/${encodeURIComponent(contactEmail)}`;
+const nextBook = `${siteUrl}/?sent=book#contact`;
+const nextContact = `${siteUrl}/?sent=contact#contact`;
+---
+
+<section id="contact" class="contact-root" aria-labelledby="contact-heading">
+  <div class="contact-inner">
+    <h2 id="contact-heading" class="contact-title">Book a talk or send a note</h2>
+    <p class="contact-lead">
+      Speaking requests use the first form. Pilgrimages, podcast ideas, media, or anything else — use the second. I read both and reply myself.
+    </p>
+
+    <p class="contact-thanks contact-thanks--book" id="contact-thanks-book" hidden>
+      Thank you — I received your booking inquiry and I’ll get back to you soon.
+    </p>
+    <p class="contact-thanks contact-thanks--contact" id="contact-thanks-contact" hidden>
+      Thank you — I received your message.
+    </p>
+
+    <div class="contact-grid">
+      <div id="book" class="contact-card">
+        <h3 class="contact-card-title">Speaking inquiry</h3>
+        <p class="contact-card-desc">Keynotes, Saturday seminars, parish missions, deanery weekends — share your date, place, and who will be in the room.</p>
+        <form
+          class="contact-form"
+          action={formEndpoint}
+          method="POST"
+          name="book-cale"
+        >
+          <input type="hidden" name="_subject" value="Speaking / booking inquiry — caleclarke.com" />
+          <input type="hidden" name="_next" value={nextBook} />
+          <input type="hidden" name="_template" value="table" />
+          <input type="text" name="_honey" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <label class="contact-field">
+            <span class="contact-label">Name</span>
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">Email</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">Organization / parish (optional)</span>
+            <input type="text" name="organization" autocomplete="organization" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">Event date or window</span>
+            <input type="text" name="event_date" placeholder="e.g. Fall 2025 or March 15" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">City &amp; region</span>
+            <input type="text" name="location" />
+          </label>
+          <label class="contact-field contact-field--full">
+            <span class="contact-label">Audience &amp; format</span>
+            <textarea name="audience_and_format" rows="3" placeholder="Who will be there, in person or virtual, approximate size…"></textarea>
+          </label>
+          <label class="contact-field contact-field--full">
+            <span class="contact-label">Anything else I should know</span>
+            <textarea name="message" rows="4"></textarea>
+          </label>
+
+          <button type="submit" class="contact-submit">Send speaking inquiry</button>
+        </form>
+      </div>
+
+      <div class="contact-card">
+        <h3 class="contact-card-title">Everything else</h3>
+        <p class="contact-card-desc">
+          Pilgrimages, podcast guests or topics, introductions, press — not a speaking date? Use this form.
+        </p>
+        <form class="contact-form" action={formEndpoint} method="POST" name="general-contact">
+          <input type="hidden" name="_subject" value="General contact — caleclarke.com" />
+          <input type="hidden" name="_next" value={nextContact} />
+          <input type="hidden" name="_template" value="table" />
+          <input type="text" name="_honey" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <label class="contact-field">
+            <span class="contact-label">Name</span>
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">Email</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="contact-field contact-field--full">
+            <span class="contact-label">Message</span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+
+          <button type="submit" class="contact-submit">Send message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      if (q.get("sent") === "book") {
+        var el = document.getElementById("contact-thanks-book");
+        if (el) el.hidden = false;
+      }
+      if (q.get("sent") === "contact") {
+        var el2 = document.getElementById("contact-thanks-contact");
+        if (el2) el2.hidden = false;
+      }
+    } catch (_) {}
+  })();
+</script>
+
+<style>
+  .contact-root {
+    scroll-margin-top: 80px;
+    padding: var(--space-xl) var(--space-md);
+    background: linear-gradient(180deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg-2) 40%, var(--color-bg)) 100%);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contact-inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .contact-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.85rem, 3.5vw, 2.35rem);
+    line-height: 1.15;
+    margin: 0 0 var(--space-sm);
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+
+  .contact-lead {
+    margin: 0 0 var(--space-lg);
+    max-width: 42rem;
+    color: var(--color-ink-muted);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  .contact-thanks {
+    margin: 0 0 var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 25%, var(--color-border));
+    color: var(--color-ink);
+    font-size: 0.975rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  @media (min-width: 800px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  .contact-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .contact-card-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.45rem;
+    margin: 0 0 var(--space-xs);
+    color: var(--color-ink);
+  }
+
+  .contact-card-desc {
+    margin: 0 0 var(--space-md);
+    font-size: 0.9375rem;
+    color: var(--color-ink-muted);
+    line-height: 1.55;
+  }
+
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 480px) {
+    .contact-form {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .contact-field--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .contact-label {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+
+  .contact-field input,
+  .contact-field textarea {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--color-ink);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .contact-field textarea {
+    resize: vertical;
+    min-height: 5rem;
+    line-height: 1.5;
+  }
+
+  .contact-field input:focus-visible,
+  .contact-field textarea:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .contact-honey {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .contact-submit {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 0.25rem;
+    min-height: 48px;
+    padding: 0.85rem 1.35rem;
+    background: var(--color-accent);
+    color: #f8f6f1;
+    border: none;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .contact-submit:hover {
+    background: var(--color-accent-hover);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .contact-submit:active {
+    transform: translateY(1px);
+  }
+
+  .contact-submit:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+</style>

@@ -1,0 +1,129 @@
+:root {
+  --color-bg: #f4f0e8;
+  --color-bg-2: #ebe4d8;
+  --color-bg-elevated: #faf8f3;
+  --color-ink: #1a1714;
+  --color-ink-muted: #4f4a44;
+  --color-border: #d9d0c4;
+  --color-accent: #243a52;
+  --color-accent-hover: #1a2a3d;
+  --color-warm: #6b3d2e;
+  /* Hero band — monochromatic slate-blue (Kent-style clarity) */
+  --hero-blue: #3d5580;
+  --hero-blue-deep: #2c3f62;
+  --hero-blue-light: #4a6a9e;
+  --hero-text: #f7f8fb;
+  --hero-text-soft: rgba(247, 248, 251, 0.88);
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-body: "Source Serif 4", "Georgia", serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: clamp(3rem, 6vw, 5rem);
+  --radius: 6px;
+  --radius-lg: 14px;
+  --shadow-soft: 0 2px 0 rgba(26, 23, 20, 0.06);
+  --shadow-lift: 8px 16px 48px rgba(26, 23, 20, 0.12);
+  --font-lead: 1.125rem;
+  --content-width: 1120px;
+  --prose-width: 40rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  background-image: radial-gradient(
+    ellipse 120% 80% at 50% -20%,
+    color-mix(in srgb, var(--color-bg-2) 85%, transparent),
+    transparent 55%
+  );
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-warm);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Header “past hero” styles live in SiteHeader.astro (scoped + !important). */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-animate {
+  animation: fade-up 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-animate {
+    animation: none;
+  }
+}

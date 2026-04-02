@@ -1,0 +1,189 @@
+---
+/**
+ * Full-bleed hero: edge-to-edge under absolute header, min full viewport height.
+ */
+interface Props {
+  imageSrc: string;
+}
+
+const { imageSrc } = Astro.props;
+---
+
+<section id="top" class="hero-root hero-animate" aria-labelledby="hero-headline">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Cale Clarke</p>
+    <h1 id="hero-headline" class="hero-headline">
+      Faith and culture, explained with clarity and joy.
+    </h1>
+    <p class="hero-sub">
+      I’m a Catholic broadcaster, speaker, and writer. I help people grasp hard Church teaching, see Scripture in everyday life, and hear from leaders across faith, business, sports, and culture — always with warmth and humor.
+    </p>
+    <p class="hero-sub hero-sub--second">
+      Booking a parish mission, seminar, or conference? I’d love to serve your people. Following along? Get my emails and tune in to the podcast.
+    </p>
+    <div class="hero-cta-wrap">
+      <a class="hero-cta" href="#newsletter">Get email updates</a>
+      <a class="hero-cta hero-cta--secondary" href="#podcast">Listen to the podcast</a>
+      <a class="hero-cta hero-cta--secondary" href="#book">Request a speaking date</a>
+    </div>
+  </div>
+</section>
+
+<style
+  define:vars={{
+    heroBgImage: `url("${imageSrc}")`,
+  }}
+>
+  .hero-root {
+    /* Fills .hero-stack (100svh); sits under absolute header */
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    /* Top padding clears nav for copy; image stays full-bleed behind */
+    padding: clamp(5.25rem, 10vmin, 6.25rem) var(--space-md) clamp(1.75rem, 4vmin, 2.5rem);
+    box-sizing: border-box;
+    background-color: var(--hero-blue-deep);
+    background-image: var(--heroBgImage);
+    background-size: cover;
+    /* Shift focal point down so portrait head sits below the nav bar */
+    background-position: 82% 56%;
+    background-repeat: no-repeat;
+  }
+
+  @media (max-width: 768px) {
+    .hero-root {
+      align-items: flex-end;
+      padding-bottom: clamp(2rem, 8vmin, 3.5rem);
+      background-position: 78% 48%;
+    }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(18, 26, 38, 0.92) 0%,
+      rgba(18, 26, 38, 0.72) 38%,
+      rgba(18, 26, 38, 0.28) 58%,
+      transparent 78%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @media (max-width: 768px) {
+    .hero-overlay {
+      background: linear-gradient(
+        180deg,
+        rgba(18, 26, 38, 0.9) 0%,
+        rgba(18, 26, 38, 0.5) 50%,
+        rgba(18, 26, 38, 0.25) 100%
+      );
+    }
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--content-width);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(247, 248, 251, 0.72);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+    line-height: 1.07;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-md);
+    color: #f7f8fb;
+    max-width: 18ch;
+  }
+
+  .hero-sub {
+    font-family: var(--font-sans);
+    margin: 0 0 var(--space-sm);
+    color: rgba(247, 248, 251, 0.9);
+    max-width: 42ch;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .hero-sub--second {
+    margin-bottom: var(--space-lg);
+    max-width: 36ch;
+    opacity: 0.92;
+  }
+
+  .hero-cta-wrap {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: center;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--hero-blue-deep);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .hero-cta:hover {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--hero-blue-deep);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .hero-cta:active {
+    transform: translateY(1px);
+  }
+
+  .hero-cta:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+
+  .hero-cta--secondary {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(247, 248, 251, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow: none;
+  }
+
+  .hero-cta--secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  }
+</style>

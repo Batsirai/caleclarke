@@ -1,0 +1,149 @@
+---
+const DEFAULT_APPLE =
+  "https://podcasts.apple.com/us/podcast/the-cale-clarke-show/id1753710541";
+
+const appleUrl =
+  import.meta.env.PUBLIC_PODCAST_APPLE_URL?.trim() || DEFAULT_APPLE;
+const spotifyUrl = import.meta.env.PUBLIC_PODCAST_SPOTIFY_URL?.trim() || "";
+const youtubeUrl = import.meta.env.PUBLIC_PODCAST_YOUTUBE_URL?.trim() || "";
+const platforms = [
+  { label: "Apple Podcasts", href: appleUrl },
+  { label: "Spotify", href: spotifyUrl },
+  { label: "YouTube", href: youtubeUrl },
+].filter((p) => p.href);
+---
+
+<section id="podcast" class="pod-root" aria-labelledby="podcast-heading">
+  <h2 id="podcast-heading" class="section-title">The Cale Clarke Show</h2>
+  <p class="pod-lede">
+    Conversations at the intersection of faith and culture — including interviews with leaders in faith, business, sports, and entertainment — plus teaching that makes the Church’s message plain.
+  </p>
+  <p class="pod-lede pod-lede--tight">
+    Listen on Apple Podcasts, Spotify, or YouTube. This is my current show (not the older Relevant Radio archive; I’m grateful for that season, but this is what I’m doing now). Subscribe so you catch new episodes.
+  </p>
+  {
+    platforms.length > 0 ? (
+      <ul class="pod-platforms" role="list">
+        {platforms.map((p) => (
+          <li>
+            <a
+              class="pod-platform-link"
+              href={p.href}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {p.label} →
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="pod-fallback">
+        Find <strong>The Cale Clarke Show</strong> on Apple Podcasts, Spotify, and YouTube.
+      </p>
+    )
+  }
+  <p class="pod-guest">
+    <a class="pod-guest-link" href="#contact">
+      Suggest a guest or topic — contact form →
+    </a>
+  </p>
+</section>
+
+<style>
+  .pod-root {
+    scroll-margin-top: 80px;
+    padding: var(--space-xl) var(--space-md);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-2) 35%, var(--color-bg)) 0%,
+      var(--color-bg) 100%
+    );
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    max-width: var(--content-width);
+    margin: 0 auto var(--space-md);
+  }
+
+  .pod-lede {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-ink-muted);
+    max-width: var(--prose-width);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pod-lede--tight {
+    margin-bottom: var(--space-md);
+  }
+
+  .pod-platforms {
+    list-style: none;
+    margin: 0 auto var(--space-md);
+    padding: 0;
+    max-width: var(--content-width);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-md);
+  }
+
+  .pod-platform-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+    text-decoration: none;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    box-shadow: var(--shadow-soft);
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.15s ease;
+  }
+
+  .pod-platform-link:hover {
+    border-color: var(--color-ink-muted);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .pod-platform-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .pod-platform-link:active {
+    transform: translateY(1px);
+  }
+
+  .pod-fallback {
+    margin: 0 auto var(--space-md);
+    max-width: var(--prose-width);
+    color: var(--color-ink-muted);
+    font-size: 1rem;
+  }
+
+  .pod-guest {
+    margin: var(--space-md) auto 0;
+    max-width: var(--content-width);
+  }
+
+  .pod-guest-link {
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+</style>

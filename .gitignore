@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+.astro/
+
+# Env (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# IDE / local tooling
+.cursor/
+
+# Local assets not for the site build
+IMG_0336.JPG
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*

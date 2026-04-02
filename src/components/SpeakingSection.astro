@@ -1,0 +1,225 @@
+---
+interface Props {
+  /** Blazer portrait — defaults to `cale-hero.jpg` (hero band may use a different full-bleed asset). */
+  imageSrc?: string;
+}
+
+const { imageSrc = "/images/cale-hero.jpg" } = Astro.props;
+---
+
+<section id="speaking" class="speaking-root" aria-labelledby="speaking-heading">
+  <div class="speaking-inner">
+    <div class="speaking-copy">
+      <p class="speaking-kicker">Speaking</p>
+      <h2 id="speaking-heading" class="speaking-title">For pastors &amp; conference organizers</h2>
+      <div class="speaking-prose">
+        <p>
+          I book paid keynotes, Saturday seminars, and multi-day parish missions — in person or online when that works. I help rooms understand, live, and share the faith with joy: Scripture, culture, and the Church’s wisdom, without condescension.
+        </p>
+        <p>
+          Send the booking form with your date, city, audience, and format. I’ll reply with availability and sample outlines. If it’s a fit, we’ll pick up by phone or email.
+        </p>
+      </div>
+      <p class="speaking-cta-wrap">
+        <a class="speaking-cta" href="#book">
+          Open the booking form
+        </a>
+      </p>
+      <div class="speaking-audiences" aria-label="Formats">
+        <p class="speaking-audiences-label">Formats</p>
+        <ul class="speaking-audiences-list">
+          <li>Keynotes</li>
+          <li>Saturday seminars</li>
+          <li>Multi-day parish missions</li>
+          <li>Parish &amp; deanery weekends</li>
+          <li>Men’s &amp; women’s conferences</li>
+          <li>Media &amp; moderated Q&amp;A</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="speaking-photo">
+      <img
+        src={imageSrc}
+        alt="Cale Clarke"
+        width="640"
+        height="800"
+        loading="lazy"
+        decoding="async"
+        class="speaking-photo-img"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .speaking-root {
+    scroll-margin-top: 80px;
+    padding: var(--space-xl) var(--space-md);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-2) 55%, var(--color-bg)) 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .speaking-inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    display: grid;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .speaking-inner {
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+      gap: clamp(2rem, 5vw, 3.5rem);
+      align-items: stretch;
+    }
+  }
+
+  .speaking-copy {
+    min-width: 0;
+  }
+
+  .speaking-kicker {
+    font-size: 0.8125rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .speaking-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.12;
+    margin: 0 0 var(--space-md);
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+
+  .speaking-prose {
+    max-width: var(--prose-width);
+  }
+
+  .speaking-prose p {
+    margin: 0 0 var(--space-md);
+    color: var(--color-ink-muted);
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+
+  .speaking-cta-wrap {
+    margin: var(--space-md) 0 var(--space-lg);
+  }
+
+  .speaking-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.85rem 1.35rem;
+    background: var(--color-accent);
+    color: #f8f6f1;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: var(--shadow-soft);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .speaking-cta:hover {
+    background: var(--color-accent-hover);
+    color: #f8f6f1;
+    box-shadow: var(--shadow-lift);
+  }
+
+  .speaking-cta:active {
+    transform: translateY(1px);
+  }
+
+  .speaking-cta:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .speaking-audiences {
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    max-width: var(--prose-width);
+  }
+
+  .speaking-audiences-label {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .speaking-audiences-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.35rem;
+    color: var(--color-ink-muted);
+    font-size: 1rem;
+  }
+
+  .speaking-audiences-list li {
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .speaking-audiences-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-warm);
+    opacity: 0.85;
+  }
+
+  .speaking-photo {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated));
+    aspect-ratio: 4 / 5;
+    max-height: min(72vh, 520px);
+  }
+
+  @media (max-width: 899px) {
+    .speaking-photo {
+      max-height: none;
+      aspect-ratio: 16 / 10;
+      justify-self: center;
+      width: min(100%, 26rem);
+    }
+  }
+
+  .speaking-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Tune for cale-hero.jpg composition */
+    object-position: 50% 22%;
+    display: block;
+  }
+
+  @media (min-width: 900px) {
+    .speaking-photo {
+      position: sticky;
+      top: calc(80px + var(--space-md));
+      align-self: start;
+    }
+  }
+</style>

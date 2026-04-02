@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Hero from "../components/Hero.astro";
+import SpeakingSection from "../components/SpeakingSection.astro";
+import KitNewsletter from "../components/KitNewsletter.astro";
+import AboutSection from "../components/AboutSection.astro";
+import InstituteSection from "../components/InstituteSection.astro";
+import PodcastSection from "../components/PodcastSection.astro";
+import PilgrimagesSection from "../components/PilgrimagesSection.astro";
+import CardinalSidebar from "../components/CardinalSidebar.astro";
+import ContactForms from "../components/ContactForms.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+const heroImage = "/images/hero-cale-full.png";
+const speakingPortraitImage = "/images/cale-hero.jpg";
+---
+
+<BaseLayout
+  title="Cale Clarke — Catholic speaker, broadcaster & founder"
+  description="Faith and culture with clarity: The Cale Clarke Show, speaking for parishes and conferences, pilgrimages, and The Faith Explained Institute. Get email updates from Cale."
+>
+  <div class="hero-stack" data-hero-stack>
+    <SiteHeader />
+    <Hero imageSrc={heroImage} />
+  </div>
+  <KitNewsletter />
+  <PodcastSection />
+  <SpeakingSection imageSrc={speakingPortraitImage} />
+  <div class="page-shell">
+    <div class="page-grid">
+      <div class="page-main">
+        <AboutSection />
+        <InstituteSection />
+        <PilgrimagesSection />
+      </div>
+      <aside class="sidebar-col" aria-label="Patron">
+        <CardinalSidebar />
+      </aside>
+    </div>
+  </div>
+  <ContactForms />
+  <SiteFooter />
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    function bindHeader() {
+      var stack = document.querySelector("[data-hero-stack]");
+      var header = document.querySelector("[data-site-header]");
+      if (!stack || !header) return;
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          var e = entries[0];
+          if (!e) return;
+          header.classList.toggle("site-header--past-hero", !e.isIntersecting);
+        },
+        { root: null, rootMargin: "0px", threshold: 0 }
+      );
+
+      requestAnimationFrame(function () {
+        io.observe(stack);
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", bindHeader);
+    } else {
+      bindHeader();
+    }
+  })();
+</script>
+
+<style>
+  /* Exactly one viewport tall; hero fills it edge-to-edge (header overlays) */
+  .hero-stack {
+    position: relative;
+    color: var(--hero-text);
+    overflow: hidden;
+    margin-bottom: 0;
+    height: 100svh;
+    min-height: 100svh;
+    min-height: 100dvh;
+  }
+
+  .hero-stack > :global(.site-header) {
+    z-index: 50;
+  }
+
+  .hero-stack > :global(.hero-root) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    min-height: 100%;
+  }
+
+  .page-shell {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    /* Space below Speaking section divider before community / patron row */
+    padding: clamp(2rem, 5vw, 3.25rem) var(--space-md) var(--space-xl);
+  }
+
+  .page-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .page-grid {
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: var(--space-xl);
+    }
+  }
+
+  .hero-stack :global(.hero-cta:focus-visible) {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+</style>

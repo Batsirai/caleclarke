@@ -1,0 +1,112 @@
+---
+const collinsUrl = "https://www.archtoronto.org/pt/our-community/bishops/cardinal-collins/";
+---
+
+<aside class="cardinal" aria-labelledby="patron-heading">
+  <h2 id="patron-heading" class="cardinal-title">Patron of The Faith Explained Institute</h2>
+  <div class="cardinal-body">
+    <figure class="cardinal-photo-wrap">
+      <img
+        src="/images/cardinal-thomas-collins.webp"
+        alt="Archbishop Emeritus Thomas Cardinal Collins"
+        width="600"
+        height="400"
+        loading="lazy"
+        class="cardinal-photo"
+      />
+    </figure>
+    <figure class="cardinal-crest-wrap">
+      <img
+        src="/images/cardinal-collins-coa.webp"
+        alt="Coat of arms of Thomas Cardinal Collins"
+        width="400"
+        height="400"
+        loading="lazy"
+        class="cardinal-crest"
+      />
+    </figure>
+    <p class="cardinal-name">Archbishop Emeritus<br />Thomas Cardinal Collins</p>
+    <p class="cardinal-copy">
+      I’m deeply grateful for his witness to faith, Scripture, and service in the Church in Canada.
+    </p>
+    <a href={collinsUrl} class="cardinal-link">Biography — Archdiocese of Toronto →</a>
+  </div>
+</aside>
+
+<style>
+  .cardinal {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-soft);
+    position: sticky;
+    top: 88px;
+  }
+
+  .cardinal-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-md);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .cardinal-photo-wrap {
+    margin: 0 0 var(--space-sm);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-bg-2);
+  }
+
+  .cardinal-photo {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .cardinal-crest-wrap {
+    margin: 0 0 var(--space-md);
+    padding: var(--space-sm);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cardinal-crest {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cardinal-name {
+    margin: 0 0 var(--space-sm);
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .cardinal-copy {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.9375rem;
+    color: var(--color-ink-muted);
+    line-height: 1.6;
+  }
+
+  .cardinal-link {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .cardinal-link:hover {
+    text-decoration: underline;
+  }
+</style>

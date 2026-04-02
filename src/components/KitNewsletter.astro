@@ -1,0 +1,220 @@
+---
+/**
+ * Kit list: form 6699201, uid ea19c66b27 — script embed + optional native POST fallback.
+ */
+const kitUid =
+  import.meta.env.PUBLIC_KIT_FORM_UID?.trim() || "ea19c66b27";
+const formId = import.meta.env.PUBLIC_KIT_FORM_ID?.trim() || "6699201";
+const formAction =
+  import.meta.env.PUBLIC_KIT_FORM_ACTION?.trim() ||
+  `https://app.kit.com/forms/${formId}/subscriptions`;
+const scriptSrcOverride = import.meta.env.PUBLIC_KIT_EMBED_SCRIPT_SRC?.trim() ?? "";
+const scriptSrc =
+  scriptSrcOverride ||
+  (kitUid ? `https://f.convertkit.com/${kitUid}/index.js` : "");
+/* Native form posts to Kit and always renders (no script/embed timing or blockers). Set PUBLIC_KIT_EMBED_MODE=script to use ConvertKit’s JS embed instead. */
+const useScriptEmbed =
+  (import.meta.env.PUBLIC_KIT_EMBED_MODE?.trim() || "form") === "script";
+const hasScript = Boolean(kitUid && scriptSrc && useScriptEmbed);
+---
+
+<section id="newsletter" class="news-root" aria-labelledby="newsletter-heading">
+  <div class="news-card">
+    <h2 id="newsletter-heading" class="news-title">Stay in the loop</h2>
+    <p class="news-lede">
+      Speaking dates, new podcast episodes, pilgrimage news, and Faith Explained resources — I send them here first, straight to your inbox.
+    </p>
+
+    {
+      hasScript ? (
+        <div class="kit-embed">
+          <script is:inline async data-uid={kitUid} src={scriptSrc}></script>
+        </div>
+      ) : (
+        <form
+          class="kit-native-form"
+          method="post"
+          action={formAction}
+          data-sv-form={formId}
+          data-uid={kitUid}
+        >
+          <div class="kit-fields">
+            <label class="kit-label">
+              <span class="sr-only">First name</span>
+              <input
+                class="kit-input"
+                type="text"
+                name="fields[first_name]"
+                placeholder="Your first name"
+                autocomplete="given-name"
+              />
+            </label>
+            <label class="kit-label">
+              <span class="sr-only">Email</span>
+              <input
+                class="kit-input"
+                type="email"
+                name="email_address"
+                placeholder="Your email address"
+                required
+                autocomplete="email"
+              />
+            </label>
+            <button class="kit-submit" type="submit">
+              Get updates
+            </button>
+          </div>
+        </form>
+      )
+    }
+
+    <p class="news-foot">Unsubscribe anytime with the link at the bottom of any email.</p>
+  </div>
+</section>
+
+<style>
+  .news-root {
+    scroll-margin-top: 80px;
+    padding: var(--space-xl) var(--space-md);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(
+      180deg,
+      var(--color-bg) 0%,
+      color-mix(in srgb, var(--color-bg-2) 45%, var(--color-bg)) 100%
+    );
+  }
+
+  .news-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .news-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    margin: 0 0 var(--space-sm);
+    letter-spacing: -0.02em;
+  }
+
+  .news-lede {
+    margin: 0 0 var(--space-md);
+    color: var(--color-ink-muted);
+    max-width: 42ch;
+    font-size: 1.0625rem;
+  }
+
+  .news-foot {
+    margin: var(--space-md) 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-ink-muted);
+  }
+
+  .kit-embed {
+    min-height: 100px;
+    max-width: 480px;
+  }
+
+  /* Soften Kit-injected form styling to match the site */
+  .kit-embed :global(.formkit-form) {
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .kit-embed :global(.formkit-fields) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .kit-embed :global(.formkit-input) {
+    font-family: var(--font-sans) !important;
+    font-size: 1rem !important;
+    color: var(--color-ink) !important;
+    background: var(--color-bg-elevated) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius) !important;
+    padding: 0.65rem 0.85rem !important;
+    width: 100% !important;
+    min-height: 48px;
+  }
+
+  .kit-embed :global(.formkit-input:focus) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .kit-embed :global(.formkit-submit) {
+    font-family: var(--font-sans) !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #f8f6f1 !important;
+    background: var(--color-accent) !important;
+    border: none !important;
+    border-radius: var(--radius) !important;
+    padding: 0.75rem 1.25rem !important;
+    cursor: pointer;
+    min-height: 48px;
+    margin-top: var(--space-xs);
+  }
+
+  .kit-embed :global(.formkit-submit:hover) {
+    background: var(--color-accent-hover) !important;
+  }
+
+  /* Native form (when PUBLIC_KIT_EMBED_MODE=form) */
+  .kit-native-form {
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .kit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .kit-label {
+    display: block;
+    margin: 0;
+  }
+
+  .kit-input {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-ink);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.65rem 0.85rem;
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .kit-input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .kit-submit {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f8f6f1;
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    min-height: 48px;
+    margin-top: var(--space-xs);
+  }
+
+  .kit-submit:hover {
+    background: var(--color-accent-hover);
+  }
+</style>

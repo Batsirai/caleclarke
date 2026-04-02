@@ -1,0 +1,122 @@
+---
+const instituteUrl =
+  import.meta.env.PUBLIC_FEI_WEBSITE_URL?.trim() ||
+  "https://www.thefaithexplained.com/";
+const donateUrl =
+  import.meta.env.PUBLIC_FEI_DONATE_URL?.trim() ||
+  "https://www.thefaithexplained.com/donate";
+---
+
+<section id="institute" class="inst-root">
+  <div class="inst-card">
+    <p class="inst-kicker">The Faith Explained Institute</p>
+    <h2 class="inst-title">Support the mission</h2>
+    <p class="inst-body">
+      I founded The Faith Explained Institute to share, explain, and defend the Catholic Faith in all its truth, goodness, and beauty — through media, formation, and outreach.
+    </p>
+    <p class="inst-body inst-body--note">
+      Programs and giving details live on the Institute site while U.S. incorporation and plans are finalized with counsel.
+    </p>
+    <p class="inst-actions">
+      <a href={instituteUrl} class="inst-link inst-link--btn" rel="noopener noreferrer" target="_blank">
+        Explore the Institute →
+      </a>
+      <a href={donateUrl} class="inst-link inst-link--btn inst-link--donate" rel="noopener noreferrer" target="_blank">
+        Support TFEI →
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .inst-root {
+    scroll-margin-top: 80px;
+    padding-bottom: var(--space-xl);
+  }
+
+  .inst-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .inst-kicker {
+    font-size: 0.8125rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .inst-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 600;
+    margin: 0 0 var(--space-md);
+    letter-spacing: -0.02em;
+  }
+
+  .inst-body {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-ink-muted);
+    line-height: 1.75;
+  }
+
+  .inst-body--note {
+    font-size: 0.9375rem;
+    font-style: italic;
+  }
+
+  .inst-actions {
+    margin: var(--space-md) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-md);
+    align-items: center;
+  }
+
+  .inst-link {
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 999px;
+    transition:
+      background 0.18s ease,
+      color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .inst-link--btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .inst-link--btn:hover {
+    border-color: var(--color-ink-muted);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .inst-link--donate {
+    background: var(--color-accent);
+    color: #f8f6f1;
+    border-color: transparent;
+  }
+
+  .inst-link--donate:hover {
+    background: var(--color-accent-hover);
+    color: #f8f6f1;
+  }
+
+  .inst-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+</style>

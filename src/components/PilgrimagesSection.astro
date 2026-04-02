@@ -1,0 +1,91 @@
+---
+---
+
+<section id="pilgrimages" class="pilg-root" aria-labelledby="pilgrimages-heading">
+  <div class="pilg-card">
+    <p class="pilg-kicker">Travel &amp; faith</p>
+    <h2 id="pilgrimages-heading" class="pilg-title">Pilgrimages</h2>
+    <p class="pilg-body">
+      I lead and promote Catholic pilgrimages — pray, learn, and walk where the saints walked. Ask about upcoming trips or bringing a group; use the contact form and put “pilgrimage” in your message so it finds me.
+    </p>
+    <p class="pilg-cta-wrap">
+      <a class="pilg-cta" href="#contact">Ask about pilgrimages</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .pilg-root {
+    scroll-margin-top: 80px;
+    padding-bottom: var(--space-xl);
+  }
+
+  .pilg-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .pilg-kicker {
+    font-size: 0.8125rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .pilg-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 600;
+    margin: 0 0 var(--space-md);
+    letter-spacing: -0.02em;
+  }
+
+  .pilg-body {
+    margin: 0;
+    color: var(--color-ink-muted);
+    line-height: 1.75;
+    max-width: var(--prose-width);
+  }
+
+  .pilg-cta-wrap {
+    margin: var(--space-md) 0 0;
+  }
+
+  .pilg-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.85rem 1.35rem;
+    background: var(--color-accent);
+    color: #f8f6f1;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: var(--shadow-soft);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .pilg-cta:hover {
+    background: var(--color-accent-hover);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .pilg-cta:active {
+    transform: translateY(1px);
+  }
+
+  .pilg-cta:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+</style>
