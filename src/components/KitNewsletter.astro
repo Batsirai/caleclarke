@@ -20,54 +20,58 @@ const hasScript = Boolean(kitUid && scriptSrc && useScriptEmbed);
 
 <section id="newsletter" class="news-root" aria-labelledby="newsletter-heading">
   <div class="news-card">
-    <h2 id="newsletter-heading" class="news-title">Stay in the loop</h2>
-    <p class="news-lede">
-      Speaking dates, new podcast episodes, pilgrimage news, and Faith Explained resources — I send them here first, straight to your inbox.
-    </p>
-
-    {
-      hasScript ? (
-        <div class="kit-embed">
-          <script is:inline async data-uid={kitUid} src={scriptSrc}></script>
-        </div>
-      ) : (
-        <form
-          class="kit-native-form"
-          method="post"
-          action={formAction}
-          data-sv-form={formId}
-          data-uid={kitUid}
-        >
-          <div class="kit-fields">
-            <label class="kit-label">
-              <span class="sr-only">First name</span>
-              <input
-                class="kit-input"
-                type="text"
-                name="fields[first_name]"
-                placeholder="Your first name"
-                autocomplete="given-name"
-              />
-            </label>
-            <label class="kit-label">
-              <span class="sr-only">Email</span>
-              <input
-                class="kit-input"
-                type="email"
-                name="email_address"
-                placeholder="Your email address"
-                required
-                autocomplete="email"
-              />
-            </label>
-            <button class="kit-submit" type="submit">
-              Get updates
-            </button>
-          </div>
-        </form>
-      )
-    }
-
+    <div class="news-grid">
+      <div class="news-copy">
+        <h2 id="newsletter-heading" class="news-title">Stay in the loop</h2>
+        <p class="news-lede">
+          Speaking dates, new podcast episodes, pilgrimage news, and Faith Explained resources — I send them here first, straight to your inbox.
+        </p>
+      </div>
+      <div class="news-form-col">
+        {
+          hasScript ? (
+            <div class="kit-embed">
+              <script is:inline async data-uid={kitUid} src={scriptSrc}></script>
+            </div>
+          ) : (
+            <form
+              class="kit-native-form"
+              method="post"
+              action={formAction}
+              data-sv-form={formId}
+              data-uid={kitUid}
+            >
+              <div class="kit-fields">
+                <label class="kit-label">
+                  <span class="sr-only">First name</span>
+                  <input
+                    class="kit-input"
+                    type="text"
+                    name="fields[first_name]"
+                    placeholder="Your first name"
+                    autocomplete="given-name"
+                  />
+                </label>
+                <label class="kit-label">
+                  <span class="sr-only">Email</span>
+                  <input
+                    class="kit-input"
+                    type="email"
+                    name="email_address"
+                    placeholder="Your email address"
+                    required
+                    autocomplete="email"
+                  />
+                </label>
+                <button class="kit-submit" type="submit">
+                  Get updates
+                </button>
+              </div>
+            </form>
+          )
+        }
+      </div>
+    </div>
     <p class="news-foot">Unsubscribe anytime with the link at the bottom of any email.</p>
   </div>
 </section>
@@ -86,11 +90,38 @@ const hasScript = Boolean(kitUid && scriptSrc && useScriptEmbed);
   }
 
   .news-card {
+    max-width: var(--content-width);
+    margin-inline: auto;
     background: var(--color-bg-elevated);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: var(--space-lg);
+    padding: clamp(1.25rem, 4vw, 2.25rem);
     box-shadow: var(--shadow-soft);
+  }
+
+  .news-grid {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .news-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+      gap: clamp(1.5rem, 4vw, 2.75rem);
+    }
+  }
+
+  .news-copy {
+    min-width: 0;
+  }
+
+  @media (max-width: 767px) {
+    .news-copy {
+      text-align: center;
+      max-width: 36rem;
+      margin-inline: auto;
+    }
   }
 
   .news-title {
@@ -102,27 +133,56 @@ const hasScript = Boolean(kitUid && scriptSrc && useScriptEmbed);
   }
 
   .news-lede {
-    margin: 0 0 var(--space-md);
+    margin: 0;
     color: var(--color-ink-muted);
-    max-width: 42ch;
     font-size: 1.0625rem;
+    line-height: 1.65;
+    max-width: 38rem;
+  }
+
+  @media (max-width: 767px) {
+    .news-lede {
+      margin-inline: auto;
+    }
+  }
+
+  .news-form-col {
+    min-width: 0;
+  }
+
+  @media (max-width: 767px) {
+    .news-form-col {
+      max-width: 420px;
+      margin-inline: auto;
+    }
   }
 
   .news-foot {
-    margin: var(--space-md) 0 0;
+    margin: var(--space-lg) 0 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
     font-size: 0.8125rem;
     color: var(--color-ink-muted);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .news-foot {
+      text-align: left;
+    }
   }
 
   .kit-embed {
     min-height: 100px;
-    max-width: 480px;
+    max-width: none;
+    width: 100%;
   }
 
   /* Soften Kit-injected form styling to match the site */
   .kit-embed :global(.formkit-form) {
     margin: 0;
-    max-width: 480px;
+    max-width: none;
+    width: 100%;
   }
 
   .kit-embed :global(.formkit-fields) {
@@ -169,7 +229,8 @@ const hasScript = Boolean(kitUid && scriptSrc && useScriptEmbed);
   /* Native form (when PUBLIC_KIT_EMBED_MODE=form) */
   .kit-native-form {
     margin: 0;
-    max-width: 480px;
+    width: 100%;
+    max-width: none;
   }
 
   .kit-fields {
