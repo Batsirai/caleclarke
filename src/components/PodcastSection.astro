@@ -11,43 +11,67 @@ const platforms = [
   { label: "Spotify", href: spotifyUrl },
   { label: "YouTube", href: youtubeUrl },
 ].filter((p) => p.href);
+
+const coverSrc =
+  import.meta.env.PUBLIC_PODCAST_COVER_SRC?.trim() ||
+  "/images/podcast-cale-clarke-show-cover.webp";
 ---
 
 <section id="podcast" class="pod-root" aria-labelledby="podcast-heading">
-  <h2 id="podcast-heading" class="section-title">The Cale Clarke Show</h2>
-  <p class="pod-lede">
-    Conversations at the intersection of faith and culture — including interviews with leaders in faith, business, sports, and entertainment — plus teaching that makes the Church’s message plain.
-  </p>
-  <p class="pod-lede pod-lede--tight">
-    Listen on Apple Podcasts, Spotify, or YouTube. This is my current show (not the older Relevant Radio archive; I’m grateful for that season, but this is what I’m doing now). Subscribe so you catch new episodes.
-  </p>
-  {
-    platforms.length > 0 ? (
-      <ul class="pod-platforms" role="list">
-        {platforms.map((p) => (
-          <li>
-            <a
-              class="pod-platform-link"
-              href={p.href}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {p.label} →
-            </a>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p class="pod-fallback">
-        Find <strong>The Cale Clarke Show</strong> on Apple Podcasts, Spotify, and YouTube.
-      </p>
-    )
-  }
-  <p class="pod-guest">
-    <a class="pod-guest-link" href="#contact">
-      Suggest a guest or topic — contact form →
+  <div class="pod-inner">
+    <h2 id="podcast-heading" class="section-title pod-title">The Cale Clarke Show</h2>
+    <a
+      href={appleUrl}
+      class="pod-art-link"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <img
+        src={coverSrc}
+        alt="The Cale Clarke Show — podcast cover art"
+        width="300"
+        height="300"
+        loading="lazy"
+        decoding="async"
+        class="pod-art"
+      />
     </a>
-  </p>
+    <div class="pod-stack">
+      <p class="pod-lede">
+        Conversations at the intersection of faith and culture — including interviews with leaders in faith, business, sports, and entertainment — plus teaching that makes the Church’s message plain.
+      </p>
+      <p class="pod-lede pod-lede--tight">
+        Listen on Apple Podcasts, Spotify, or YouTube. This is my current show (not the older Relevant Radio archive; I’m grateful for that season, but this is what I’m doing now). Subscribe so you catch new episodes.
+      </p>
+      {
+        platforms.length > 0 ? (
+          <ul class="pod-platforms" role="list">
+            {platforms.map((p) => (
+              <li>
+                <a
+                  class="pod-platform-link"
+                  href={p.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {p.label} →
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="pod-fallback">
+            Find <strong>The Cale Clarke Show</strong> on Apple Podcasts, Spotify, and YouTube.
+          </p>
+        )
+      }
+      <p class="pod-guest">
+        <a class="pod-guest-link" href="#contact">
+          Suggest a guest or topic — contact form →
+        </a>
+      </p>
+    </div>
+  </div>
 </section>
 
 <style>
@@ -63,23 +87,109 @@ const platforms = [
     );
   }
 
+  .pod-inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    display: grid;
+    gap: var(--space-md);
+    grid-template-areas:
+      "title"
+      "art"
+      "stack";
+    justify-items: center;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .pod-inner {
+      grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+      grid-template-areas:
+        "art title"
+        "art stack";
+      gap: var(--space-lg) var(--space-xl);
+      align-items: start;
+      justify-items: stretch;
+      text-align: left;
+    }
+  }
+
+  .pod-title {
+    grid-area: title;
+    margin: 0 0 var(--space-xs);
+    max-width: none;
+    width: 100%;
+  }
+
+  .pod-art-link {
+    grid-area: art;
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+    line-height: 0;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .pod-art-link:hover {
+    box-shadow: var(--shadow-soft), 0 12px 40px color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+
+  .pod-art-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .pod-art-link:active {
+    transform: translateY(1px);
+  }
+
+  .pod-art {
+    width: min(220px, 72vw);
+    height: auto;
+    aspect-ratio: 1;
+    display: block;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    .pod-art {
+      width: 100%;
+      max-width: 220px;
+    }
+  }
+
+  .pod-stack {
+    grid-area: stack;
+    width: 100%;
+    max-width: var(--prose-width);
+  }
+
+  @media (min-width: 768px) {
+    .pod-stack {
+      max-width: none;
+    }
+  }
+
   .section-title {
     font-family: var(--font-display);
     font-size: clamp(1.5rem, 2.5vw, 2rem);
     font-weight: 600;
     letter-spacing: -0.02em;
-    max-width: var(--content-width);
-    margin: 0 auto var(--space-md);
   }
 
   .pod-lede {
     margin: 0 0 var(--space-sm);
     color: var(--color-ink-muted);
-    max-width: var(--prose-width);
     font-size: 1.0625rem;
     line-height: 1.75;
-    margin-left: auto;
-    margin-right: auto;
+  }
+
+  @media (min-width: 768px) {
+    .pod-lede {
+      max-width: var(--prose-width);
+    }
   }
 
   .pod-lede--tight {
@@ -88,12 +198,18 @@ const platforms = [
 
   .pod-platforms {
     list-style: none;
-    margin: 0 auto var(--space-md);
+    margin: 0 0 var(--space-md);
     padding: 0;
-    max-width: var(--content-width);
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm) var(--space-md);
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .pod-platforms {
+      justify-content: flex-start;
+    }
   }
 
   .pod-platform-link {
@@ -131,15 +247,20 @@ const platforms = [
   }
 
   .pod-fallback {
-    margin: 0 auto var(--space-md);
-    max-width: var(--prose-width);
+    margin: 0 0 var(--space-md);
     color: var(--color-ink-muted);
     font-size: 1rem;
+    text-align: left;
   }
 
   .pod-guest {
-    margin: var(--space-md) auto 0;
-    max-width: var(--content-width);
+    margin: var(--space-md) 0 0;
+  }
+
+  @media (max-width: 767px) {
+    .pod-fallback {
+      text-align: center;
+    }
   }
 
   .pod-guest-link {

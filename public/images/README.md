@@ -8,3 +8,4 @@
 | `cardinal-thomas-collins.webp` | Cardinal portrait (sidebar) |
 | `cardinal-collins-coa.webp` | Coat of arms |
 | `placeholder-hero.svg` | Dev placeholder |
+| `podcast-cale-clarke-show-cover.webp` | The Cale Clarke Show (Apple Podcasts artwork) |
