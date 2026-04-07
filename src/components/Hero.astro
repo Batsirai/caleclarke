@@ -53,9 +53,24 @@ const { imageSrc } = Astro.props;
   }
 
   @media (max-width: 768px) {
+    /*
+      Tall mobile stacks (headline + body + 3 CTAs) used to overflow upward under
+      the absolute header when align-items:flex-end pinned the block to the bottom.
+      Column + justify-content:flex-end + overflow-y:auto lets short viewports scroll
+      and keeps copy below safe-area + nav clearance.
+    */
     .hero-root {
-      align-items: flex-end;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: stretch;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 6.25rem);
       padding-bottom: clamp(2rem, 8vmin, 3.5rem);
+      padding-left: var(--space-md);
+      padding-right: var(--space-md);
       background-position: 78% 48%;
     }
   }
@@ -91,6 +106,7 @@ const { imageSrc } = Astro.props;
     max-width: var(--content-width);
     width: 100%;
     margin: 0 auto;
+    flex-shrink: 0;
   }
 
   .hero-eyebrow {
