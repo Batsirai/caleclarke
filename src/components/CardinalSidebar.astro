@@ -40,8 +40,13 @@ const collinsUrl = "https://www.archtoronto.org/pt/our-community/bishops/cardina
     border-radius: var(--radius-lg);
     padding: var(--space-md);
     box-shadow: var(--shadow-soft);
-    position: sticky;
-    top: 88px;
+  }
+
+  @media (min-width: 900px) {
+    .cardinal {
+      position: sticky;
+      top: 88px;
+    }
   }
 
   .cardinal-title {

@@ -13,7 +13,17 @@ const nav = [
 <header class="site-header" data-site-header>
   <div class="site-header-inner">
     <a class="site-logo" href="#top">Cale Clarke</a>
-    <nav class="site-nav" aria-label="Primary">
+    <button
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+      aria-label="Open menu"
+    >
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+    <nav id="primary-nav" class="site-nav" aria-label="Primary">
       <ul>
         {
           nav.map((item) => (
@@ -26,6 +36,35 @@ const nav = [
     </nav>
   </div>
 </header>
+
+<script is:inline>
+  (function () {
+    var btn = document.querySelector(".nav-toggle");
+    var nav = document.getElementById("primary-nav");
+    if (!btn || !nav) return;
+
+    function close() {
+      btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-label", "Open menu");
+      nav.classList.remove("site-nav--open");
+    }
+
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") === "true";
+      if (open) {
+        close();
+      } else {
+        btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("aria-label", "Close menu");
+        nav.classList.add("site-nav--open");
+      }
+    });
+
+    nav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", close);
+    });
+  })();
+</script>
 
 <style>
   /* Over hero: light text on photo; no cream bar */
@@ -52,7 +91,7 @@ const nav = [
     align-items: center;
     justify-content: space-between;
     gap: var(--space-md);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .site-logo {
@@ -141,10 +180,93 @@ const nav = [
     outline-color: var(--color-accent) !important;
   }
 
+  /* --- Hamburger toggle (mobile only) --- */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 60;
+  }
+
+  .nav-toggle-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav-toggle:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 3px;
+  }
+
+  /* Past-hero: dark bars */
+  .site-header.site-header--past-hero .nav-toggle-bar {
+    background: var(--color-ink) !important;
+  }
+
   @media (max-width: 720px) {
+    .nav-toggle {
+      display: flex;
+    }
+
     .site-nav {
-      order: 3;
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: color-mix(in srgb, var(--color-bg) 98%, #fff);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 8px 32px rgba(26, 23, 20, 0.12);
+      padding: var(--space-sm) var(--space-md) var(--space-md);
+    }
+
+    .site-nav--open {
+      display: block;
+    }
+
+    .site-nav ul {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .site-nav a {
+      color: var(--color-ink) !important;
+      text-shadow: none !important;
+      padding: 0.75rem 0.5rem;
+      min-height: 48px;
+      border-bottom: 1px solid var(--color-border);
       width: 100%;
+      display: flex;
+    }
+
+    .site-nav li:last-child a {
+      border-bottom: none;
+    }
+
+    .site-nav a:hover {
+      color: var(--color-accent) !important;
+      background: color-mix(in srgb, var(--color-accent) 6%, transparent);
     }
   }
 </style>

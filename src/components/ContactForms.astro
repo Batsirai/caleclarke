@@ -304,6 +304,13 @@ const formAction = "https://api.staticforms.dev/submit";
       transform 0.15s ease;
   }
 
+  @media (max-width: 480px) {
+    .contact-submit {
+      width: 100%;
+      justify-self: stretch;
+    }
+  }
+
   .contact-submit:hover {
     background: var(--color-accent-hover);
     box-shadow: var(--shadow-lift);
