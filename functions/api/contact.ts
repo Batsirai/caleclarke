@@ -93,7 +93,17 @@ export async function onRequestPost(context: {
   });
 
   if (res.status === 429) {
-    return Response.json({ ok: false, error: "rate_limited" }, { status: 429 });
+    let detail = "";
+    try {
+      const j = (await res.json()) as { message?: string; error?: string };
+      detail = (j.message || j.error || "").toString().slice(0, 200);
+    } catch {
+      /* ignore */
+    }
+    return Response.json(
+      { ok: false, error: "rate_limited", detail },
+      { status: 429 },
+    );
   }
 
   if (!res.ok) {

@@ -202,8 +202,11 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
               res.status === 503
                 ? "This form is not configured yet. Please try again later."
                 : res.status === 429
-                  ? "Too many submissions right now. Please wait a minute and try again."
+                  ? "The form service is rate-limited right now (Static Forms allows a limited number of emails per minute and per month). Wait a few minutes and try again, or check your Static Forms dashboard for quota."
                   : "Something went wrong. Please try again or email directly.";
+            if (res.status === 429 && data && data.detail) {
+              msg += " " + String(data.detail);
+            }
             if (errEl) {
               errEl.textContent = msg;
               errEl.hidden = false;
