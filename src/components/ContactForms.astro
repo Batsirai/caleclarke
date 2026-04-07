@@ -36,9 +36,9 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
       <div id="book" class="contact-card">
         <h3 class="contact-card-title">Speaking inquiry</h3>
         <p class="contact-card-desc">Keynotes, Saturday seminars, parish missions, deanery weekends — share your date, place, and who will be in the room.</p>
-        <p class="contact-form-error" role="alert" hidden></p>
         <form class="contact-form" data-contact-form="book" name="book-cale">
           <input type="text" name="_trap" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <p class="contact-form-error" role="alert" hidden></p>
 
           <label class="contact-field">
             <span class="contact-label">Name</span>
@@ -70,6 +70,9 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
           </label>
 
           <button type="submit" class="contact-submit">Send speaking inquiry</button>
+          <p class="contact-form-success" role="status" aria-live="polite" hidden tabindex="-1">
+            Thank you — I received your booking inquiry and I’ll get back to you soon.
+          </p>
         </form>
       </div>
 
@@ -78,9 +81,9 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
         <p class="contact-card-desc">
           Pilgrimages, podcast guests or topics, introductions, press — not a speaking date? Use this form.
         </p>
-        <p class="contact-form-error" role="alert" hidden></p>
         <form class="contact-form" data-contact-form="general" name="general-contact">
           <input type="text" name="_trap" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <p class="contact-form-error" role="alert" hidden></p>
 
           <label class="contact-field">
             <span class="contact-label">Name</span>
@@ -96,6 +99,9 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
           </label>
 
           <button type="submit" class="contact-submit">Send message</button>
+          <p class="contact-form-success" role="status" aria-live="polite" hidden tabindex="-1">
+            Thank you — I received your message.
+          </p>
         </form>
       </div>
     </div>
@@ -128,14 +134,18 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
 
     document.querySelectorAll("[data-contact-form]").forEach(function (form) {
       var errEl = form.querySelector(".contact-form-error");
+      var successEl = form.querySelector(".contact-form-success");
       var submitBtn = form.querySelector('button[type="submit"]');
-      var defaultLabel = submitBtn ? submitBtn.textContent : "";
+      var defaultLabel = submitBtn ? submitBtn.textContent.trim() : "";
 
       form.addEventListener("submit", async function (e) {
         e.preventDefault();
         if (errEl) {
           errEl.hidden = true;
           errEl.textContent = "";
+        }
+        if (successEl) {
+          successEl.hidden = true;
         }
 
         var fd = new FormData(form);
@@ -174,22 +184,42 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
           var data = await res.json().catch(function () {
             return {};
           });
-          if (res.ok && data.ok) {
+          var succeeded = res.ok && data && data.ok === true;
+          if (succeeded) {
             form.reset();
-            showThanks(formKind === "book" ? "book" : "general");
-          } else if (errEl) {
-            errEl.textContent =
+            hideThanks();
+            if (successEl) {
+              successEl.hidden = false;
+              successEl.scrollIntoView({ behavior: "smooth", block: "center" });
+              try {
+                successEl.focus();
+              } catch (_) {}
+            } else {
+              showThanks(formKind === "book" ? "book" : "general");
+            }
+          } else {
+            var msg =
               res.status === 503
                 ? "This form is not configured yet. Please try again later."
                 : res.status === 429
                   ? "Too many submissions right now. Please wait a minute and try again."
                   : "Something went wrong. Please try again or email directly.";
-            errEl.hidden = false;
+            if (errEl) {
+              errEl.textContent = msg;
+              errEl.hidden = false;
+              errEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            } else {
+              window.alert(msg);
+            }
           }
         } catch (_) {
+          var netMsg = "Network error. Check your connection and try again.";
           if (errEl) {
-            errEl.textContent = "Network error. Check your connection and try again.";
+            errEl.textContent = netMsg;
             errEl.hidden = false;
+            errEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          } else {
+            window.alert(netMsg);
           }
         } finally {
           if (submitBtn) {
@@ -244,15 +274,32 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
     font-size: 0.975rem;
   }
 
-  .contact-form-error {
-    margin: 0 0 var(--space-md);
+  .contact-form-error,
+  .contact-form-success {
+    grid-column: 1 / -1;
+    margin: 0;
     padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .contact-form-error {
+    margin-bottom: 0;
     background: color-mix(in srgb, #b42318 10%, var(--color-bg-elevated));
     border: 1px solid color-mix(in srgb, #b42318 28%, var(--color-border));
     color: var(--color-ink);
-    font-size: 0.9375rem;
-    line-height: 1.5;
+  }
+
+  .contact-form-success {
+    margin-top: var(--space-xs);
+    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 25%, var(--color-border));
+    color: var(--color-ink);
+  }
+
+  .contact-form-success:focus {
+    outline: none;
   }
 
   .contact-grid {
