@@ -1,9 +1,14 @@
 ---
 /**
- * Contact forms POST to /api/contact (Cloudflare Pages Function → Static Forms).
- * Set STATICFORMS_API_KEY (secret) in Cloudflare Pages. Optional: PUBLIC_CONTACT_API_URL.
+ * Direct HTML POST to Static Forms — no Pages Function needed.
+ * PUBLIC_STATICFORMS_API_KEY is baked into static HTML at build time (this is
+ * how Static Forms is designed; use their domain-allowlist for security).
  */
-const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
+const apiKey = import.meta.env.PUBLIC_STATICFORMS_API_KEY ?? "";
+const siteUrl = (import.meta.env.SITE ?? "https://caleclarke.com").replace(/\/$/, "");
+const redirectBook = `${siteUrl}/?sent=book#contact`;
+const redirectContact = `${siteUrl}/?sent=contact#contact`;
+const formAction = "https://api.staticforms.dev/submit";
 ---
 
 <section id="contact" class="contact-root" aria-labelledby="contact-heading">
@@ -20,7 +25,7 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
       aria-live="polite"
       hidden
     >
-      Thank you — I received your booking inquiry and I’ll get back to you soon.
+      Thank you — I received your booking inquiry and I'll get back to you soon.
     </p>
     <p
       class="contact-thanks contact-thanks--contact"
@@ -36,9 +41,16 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
       <div id="book" class="contact-card">
         <h3 class="contact-card-title">Speaking inquiry</h3>
         <p class="contact-card-desc">Keynotes, Saturday seminars, parish missions, deanery weekends — share your date, place, and who will be in the room.</p>
-        <form class="contact-form" data-contact-form="book" name="book-cale">
-          <input type="text" name="_trap" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <p class="contact-form-error" role="alert" hidden></p>
+        <form
+          class="contact-form"
+          action={formAction}
+          method="POST"
+          name="book-cale"
+        >
+          <input type="hidden" name="apiKey" value={apiKey} />
+          <input type="hidden" name="subject" value="Speaking / booking inquiry — caleclarke.com" />
+          <input type="hidden" name="redirectTo" value={redirectBook} />
+          <input type="text" name="honeypot" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <label class="contact-field">
             <span class="contact-label">Name</span>
@@ -70,9 +82,6 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
           </label>
 
           <button type="submit" class="contact-submit">Send speaking inquiry</button>
-          <p class="contact-form-success" role="status" aria-live="polite" hidden tabindex="-1">
-            Thank you — I received your booking inquiry and I’ll get back to you soon.
-          </p>
         </form>
       </div>
 
@@ -81,9 +90,16 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
         <p class="contact-card-desc">
           Pilgrimages, podcast guests or topics, introductions, press — not a speaking date? Use this form.
         </p>
-        <form class="contact-form" data-contact-form="general" name="general-contact">
-          <input type="text" name="_trap" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <p class="contact-form-error" role="alert" hidden></p>
+        <form
+          class="contact-form"
+          action={formAction}
+          method="POST"
+          name="general-contact"
+        >
+          <input type="hidden" name="apiKey" value={apiKey} />
+          <input type="hidden" name="subject" value="General contact — caleclarke.com" />
+          <input type="hidden" name="redirectTo" value={redirectContact} />
+          <input type="text" name="honeypot" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <label class="contact-field">
             <span class="contact-label">Name</span>
@@ -99,139 +115,31 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
           </label>
 
           <button type="submit" class="contact-submit">Send message</button>
-          <p class="contact-form-success" role="status" aria-live="polite" hidden tabindex="-1">
-            Thank you — I received your message.
-          </p>
         </form>
       </div>
     </div>
   </div>
 </section>
 
-<script is:inline define:vars={{ contactApiPath }}>
+<script is:inline>
   (function () {
-    function showThanks(kind) {
-      var id = kind === "book" ? "contact-thanks-book" : "contact-thanks-contact";
-      var el = document.getElementById(id);
-      if (el) {
-        el.hidden = false;
-        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-    }
-
-    function hideThanks() {
-      ["contact-thanks-book", "contact-thanks-contact"].forEach(function (hid) {
-        var el = document.getElementById(hid);
-        if (el) el.hidden = true;
-      });
-    }
-
     try {
       var q = new URLSearchParams(window.location.search);
-      if (q.get("sent") === "book") showThanks("book");
-      if (q.get("sent") === "contact") showThanks("general");
+      var sent = q.get("sent");
+      if (sent === "book" || sent === "contact") {
+        var id = sent === "book" ? "contact-thanks-book" : "contact-thanks-contact";
+        var el = document.getElementById(id);
+        if (el) {
+          el.hidden = false;
+          el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+        if (window.history && window.history.replaceState) {
+          q.delete("sent");
+          var clean = window.location.pathname + (q.toString() ? "?" + q : "") + window.location.hash;
+          window.history.replaceState(null, "", clean);
+        }
+      }
     } catch (_) {}
-
-    document.querySelectorAll("[data-contact-form]").forEach(function (form) {
-      var errEl = form.querySelector(".contact-form-error");
-      var successEl = form.querySelector(".contact-form-success");
-      var submitBtn = form.querySelector('button[type="submit"]');
-      var defaultLabel = submitBtn ? submitBtn.textContent.trim() : "";
-
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        if (errEl) {
-          errEl.hidden = true;
-          errEl.textContent = "";
-        }
-        if (successEl) {
-          successEl.hidden = true;
-        }
-
-        var fd = new FormData(form);
-        if ((fd.get("_trap") || "").toString().trim()) return;
-
-        var formKind = form.getAttribute("data-contact-form");
-        if (formKind !== "book" && formKind !== "general") return;
-
-        var payload = {
-          form: formKind === "book" ? "book" : "general",
-          name: fd.get("name"),
-          email: fd.get("email"),
-          message: fd.get("message") || "",
-          _trap: "",
-        };
-
-        if (formKind === "book") {
-          payload.organization = fd.get("organization") || "";
-          payload.event_date = fd.get("event_date") || "";
-          payload.location = fd.get("location") || "";
-          payload.audience_and_format = fd.get("audience_and_format") || "";
-        }
-
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Sending…";
-        }
-        hideThanks();
-
-        try {
-          var res = await fetch(contactApiPath, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-          var data = await res.json().catch(function () {
-            return {};
-          });
-          var succeeded = res.ok && data && data.ok === true;
-          if (succeeded) {
-            form.reset();
-            hideThanks();
-            if (successEl) {
-              successEl.hidden = false;
-              successEl.scrollIntoView({ behavior: "smooth", block: "center" });
-              try {
-                successEl.focus();
-              } catch (_) {}
-            } else {
-              showThanks(formKind === "book" ? "book" : "general");
-            }
-          } else {
-            var msg =
-              res.status === 503
-                ? "This form is not configured yet. Please try again later."
-                : res.status === 429
-                  ? "The form service is rate-limited right now (Static Forms allows a limited number of emails per minute and per month). Wait a few minutes and try again, or check your Static Forms dashboard for quota."
-                  : "Something went wrong. Please try again or email directly.";
-            if (res.status === 429 && data && data.detail) {
-              msg += " " + String(data.detail);
-            }
-            if (errEl) {
-              errEl.textContent = msg;
-              errEl.hidden = false;
-              errEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            } else {
-              window.alert(msg);
-            }
-          }
-        } catch (_) {
-          var netMsg = "Network error. Check your connection and try again.";
-          if (errEl) {
-            errEl.textContent = netMsg;
-            errEl.hidden = false;
-            errEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          } else {
-            window.alert(netMsg);
-          }
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = defaultLabel;
-          }
-        }
-      });
-    });
   })();
 </script>
 
@@ -275,34 +183,6 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
     border: 1px solid color-mix(in srgb, var(--color-accent) 25%, var(--color-border));
     color: var(--color-ink);
     font-size: 0.975rem;
-  }
-
-  .contact-form-error,
-  .contact-form-success {
-    grid-column: 1 / -1;
-    margin: 0;
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-  }
-
-  .contact-form-error {
-    margin-bottom: 0;
-    background: color-mix(in srgb, #b42318 10%, var(--color-bg-elevated));
-    border: 1px solid color-mix(in srgb, #b42318 28%, var(--color-border));
-    color: var(--color-ink);
-  }
-
-  .contact-form-success {
-    margin-top: var(--space-xs);
-    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated));
-    border: 1px solid color-mix(in srgb, var(--color-accent) 25%, var(--color-border));
-    color: var(--color-ink);
-  }
-
-  .contact-form-success:focus {
-    outline: none;
   }
 
   .contact-grid {
@@ -436,11 +316,5 @@ const contactApiPath = import.meta.env.PUBLIC_CONTACT_API_URL ?? "/api/contact";
   .contact-submit:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-  }
-
-  .contact-submit:disabled {
-    opacity: 0.75;
-    cursor: not-allowed;
-    transform: none;
   }
 </style>

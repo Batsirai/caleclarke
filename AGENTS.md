@@ -12,6 +12,6 @@
 
 - This repo is an Astro static site built for Cloudflare Pages (`output: "static"`, `dist/`).
 - Kit (ConvertKit) newsletter uses form id `6699201` and uid `ea19c66b27`; default `PUBLIC_KIT_EMBED_MODE` favors native HTML POST to Kit so inputs always render without depending on the async script embed.
-- Booking and general contact use a Cloudflare Pages Function (`/api/contact`) that forwards to [Static Forms](https://www.staticforms.dev) (`STATICFORMS_API_KEY`); no harvestable inbox address in static HTML.
+- Booking and general contact POST directly to [Static Forms](https://www.staticforms.dev) (`PUBLIC_STATICFORMS_API_KEY` baked at build); no harvestable inbox address in static HTML.
 - Institute site defaults to `https://www.thefaithexplained.com/` (`PUBLIC_FEI_WEBSITE_URL`); donate defaults to `/donate` on that domain (`PUBLIC_FEI_DONATE_URL` to override).
 - About section links to LinkedIn by default (`https://www.linkedin.com/in/cale-clarke-4636a12b/`); override with `PUBLIC_LINKEDIN_URL` if the profile URL changes. Optional `PUBLIC_PODCAST_*` env vars add Spotify/YouTube listen buttons.

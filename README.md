@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Contact forms call **`/api/contact`** (not available in `astro dev`). To exercise them locally: add `.dev.vars` with `STATICFORMS_API_KEY=...`, then run **`npm run dev:pages`** (builds the site and serves `dist` with Pages Functions).
+Contact forms POST directly to [Static Forms](https://www.staticforms.dev) — no server-side code needed.
 
 Build:
 
@@ -20,7 +20,7 @@ npm run preview
 
 Optional: copy `.env.example` to `.env` and set:
 
-- **`PUBLIC_CONTACT_API_URL`** (optional) — defaults to `/api/contact`. Override only if the API path changes.
+- **`PUBLIC_STATICFORMS_API_KEY`** — your Static Forms API key (baked into HTML at build time; their security model uses domain allowlists, not key secrecy).
 - **`PUBLIC_KIT_FORM_UID`** — Kit newsletter embed. In [Kit](https://kit.com), open your form → **Share** / **Embed** → HTML, and copy the `data-uid` value from the `<script>` tag (same list as your current squeeze page).
 - **`PUBLIC_KIT_EMBED_SCRIPT_SRC`** (optional) — only if Kit gives a different script URL than `https://f.convertkit.com/{uid}/index.js`; paste the full `src` here.
 - **`PUBLIC_FEI_WEBSITE_URL`** (optional) — “Visit the Institute” link on the home page.
@@ -36,7 +36,7 @@ Page flow: hero → **newsletter (Kit)** → **The Cale Clarke Show** → **Spea
    - **Build output directory:** `dist`
    - **Root directory:** `/` (repo root)
 4. Add environment variables in Pages → Settings → Environment variables (Production + Preview as needed):
-   - **`STATICFORMS_API_KEY`** (secret) — [Static Forms](https://www.staticforms.dev) API key; the Pages Function posts to `/api/contact`, which forwards JSON to Static Forms (notifications go to the email on your Static Forms account).
+   - **`PUBLIC_STATICFORMS_API_KEY`** (plaintext) — [Static Forms](https://www.staticforms.dev) API key; forms POST directly to Static Forms at build time (notifications go to the email on your Static Forms account).
    - **`PUBLIC_KIT_FORM_UID`** (and **`PUBLIC_KIT_EMBED_SCRIPT_SRC`** if you use a custom script URL).
 5. Connect custom domain **caleclarke.com** under the Pages project → **Custom domains**.
 
