@@ -67,7 +67,7 @@ const { imageSrc } = Astro.props;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
-      padding-top: calc(env(safe-area-inset-top, 0px) + 6.25rem);
+      padding-top: calc(env(safe-area-inset-top, 0px) + 7.75rem);
       padding-bottom: clamp(2rem, 8vmin, 3.5rem);
       padding-left: var(--space-md);
       padding-right: var(--space-md);
@@ -129,6 +129,21 @@ const { imageSrc } = Astro.props;
     max-width: 18ch;
   }
 
+  @media (max-width: 768px) {
+    .hero-eyebrow {
+      display: none;
+    }
+
+    .hero-headline {
+      max-width: none;
+    }
+
+    .hero-sub,
+    .hero-sub--second {
+      max-width: none;
+    }
+  }
+
   .hero-sub {
     font-family: var(--font-sans);
     margin: 0 0 var(--space-sm);
@@ -153,7 +168,8 @@ const { imageSrc } = Astro.props;
     align-items: center;
   }
 
-  @media (max-width: 480px) {
+  /* Stack all hero CTAs until tablet — avoids 2+1 pill wrap on phones */
+  @media (max-width: 768px) {
     .hero-cta-wrap {
       flex-direction: column;
       align-items: stretch;
