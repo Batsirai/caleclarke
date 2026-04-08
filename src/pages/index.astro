@@ -75,15 +75,13 @@ const speakingPortraitImage = "/images/cale-hero.jpg";
 </script>
 
 <style>
-  /* Exactly one viewport tall; hero fills it edge-to-edge (header overlays) */
   .hero-stack {
     position: relative;
     color: var(--hero-text);
     overflow: hidden;
     margin-bottom: 0;
-    height: 100svh;
-    min-height: 100svh;
-    min-height: 100dvh;
+    height: 701px;
+    background-color: #fff;
   }
 
   .hero-stack > :global(.site-header) {
@@ -95,6 +93,20 @@ const speakingPortraitImage = "/images/cale-hero.jpg";
     inset: 0;
     z-index: 1;
     min-height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .hero-stack {
+      height: auto;
+      min-height: 100dvh;
+      overflow: visible;
+    }
+
+    .hero-stack > :global(.hero-root) {
+      position: relative;
+      inset: auto;
+      min-height: 100dvh;
+    }
   }
 
   .page-shell {

@@ -1,9 +1,7 @@
 ---
 const nav = [
   { href: "#newsletter", label: "Newsletter" },
-  { href: "#podcast", label: "Podcast" },
   { href: "#speaking", label: "Speaking" },
-  { href: "#pilgrimages", label: "Pilgrimages" },
   { href: "#institute", label: "Institute" },
   { href: "#about", label: "About" },
   { href: "#contact", label: "Contact" },
@@ -94,10 +92,19 @@ const nav = [
     flex-wrap: nowrap;
   }
 
+  @media (max-width: 768px) {
+    .site-header-inner {
+      padding-top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.5rem));
+      padding-left: max(var(--space-md), env(safe-area-inset-left, 0px));
+      padding-right: max(var(--space-md), env(safe-area-inset-right, 0px));
+    }
+  }
+
   .site-logo {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1.35rem;
+    font-size: 34px;
+    line-height: 1;
     letter-spacing: -0.02em;
     color: #fff;
     text-decoration: none;
@@ -114,7 +121,7 @@ const nav = [
     margin: 0;
     padding: 0;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: var(--space-xs) var(--space-sm);
     align-items: center;
   }

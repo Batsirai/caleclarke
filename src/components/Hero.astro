@@ -12,15 +12,14 @@ const { imageSrc } = Astro.props;
 <section id="top" class="hero-root hero-animate" aria-labelledby="hero-headline">
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-inner">
-    <p class="hero-eyebrow">Cale Clarke</p>
     <h1 id="hero-headline" class="hero-headline">
       Faith and culture, explained with clarity and joy.
     </h1>
     <p class="hero-sub">
-      I’m a Catholic broadcaster, speaker, and writer. I help people grasp hard Church teaching, see Scripture in everyday life, and hear from leaders across faith, business, sports, and culture — always with warmth and humor.
+      I'm a Catholic broadcaster, speaker, and writer. I help people grasp hard Church teaching, see Scripture in everyday life, and hear from leaders across faith, business, sports, and culture — always with warmth and humor.
     </p>
     <p class="hero-sub hero-sub--second">
-      Booking a parish mission, seminar, or conference? I’d love to serve your people. Following along? Get my emails and tune in to the podcast.
+      Booking a parish mission, seminar, or conference? I'd love to serve your people. Following along? Get my emails and tune in to the podcast.
     </p>
     <div class="hero-cta-wrap">
       <a class="hero-cta" href="#newsletter">Get email updates</a>
@@ -36,42 +35,49 @@ const { imageSrc } = Astro.props;
   }}
 >
   .hero-root {
-    /* Fills .hero-stack (100svh); sits under absolute header */
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
-    /* Top padding clears nav for copy; image stays full-bleed behind */
     padding: clamp(5.25rem, 10vmin, 6.25rem) var(--space-md) clamp(1.75rem, 4vmin, 2.5rem);
     box-sizing: border-box;
     background-color: var(--hero-blue-deep);
     background-image: var(--heroBgImage);
     background-size: cover;
-    /* Shift focal point down so portrait head sits below the nav bar */
     background-position: 82% 56%;
     background-repeat: no-repeat;
   }
 
   @media (max-width: 768px) {
-    /*
-      Tall mobile stacks (headline + body + 3 CTAs) used to overflow upward under
-      the absolute header when align-items:flex-end pinned the block to the bottom.
-      Column + justify-content:flex-end + overflow-y:auto lets short viewports scroll
-      and keeps copy below safe-area + nav clearance.
-    */
     .hero-root {
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: stretch;
-      overflow-x: hidden;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
-      padding-top: calc(env(safe-area-inset-top, 0px) + 7.75rem);
-      padding-bottom: clamp(2rem, 8vmin, 3.5rem);
-      padding-left: var(--space-md);
-      padding-right: var(--space-md);
-      background-position: 78% 48%;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 5rem);
+      padding-bottom: clamp(1.5rem, 6vmin, 2.5rem);
+      padding-left: max(var(--space-md), env(safe-area-inset-left, 0px));
+      padding-right: max(var(--space-md), env(safe-area-inset-right, 0px));
+      background-position: 70% 20%;
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-sub--second {
+      display: none;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      line-height: 1.5;
+      width: 242px;
+    }
+
+    .hero-cta-wrap {
+      margin-top: auto;
+      padding-top: var(--space-md);
     }
   }
 
@@ -105,37 +111,28 @@ const { imageSrc } = Astro.props;
     z-index: 1;
     max-width: var(--content-width);
     width: 100%;
-    margin: 0 auto;
+    margin: 73px auto;
     flex-shrink: 0;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.8125rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(247, 248, 251, 0.72);
-    margin: 0 0 var(--space-sm);
   }
 
   .hero-headline {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+    font-size: clamp(2.25rem, 5.5vw, 2.875rem);
     line-height: 1.07;
     letter-spacing: -0.02em;
-    margin: 0 0 var(--space-md);
+    margin: 1.5rem 0 var(--space-md);
     color: #f7f8fb;
-    max-width: 18ch;
+    width: auto;
+    max-width: 533px;
   }
 
   @media (max-width: 768px) {
-    .hero-eyebrow {
-      display: none;
-    }
-
     .hero-headline {
       max-width: none;
+      width: 197px;
+      font-size: 2.625rem;
+      line-height: 1.08;
     }
 
     .hero-sub,
@@ -161,14 +158,13 @@ const { imageSrc } = Astro.props;
   }
 
   .hero-cta-wrap {
-    margin: 0;
+    margin: 36px 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
     align-items: center;
   }
 
-  /* Stack all hero CTAs until tablet — avoids 2+1 pill wrap on phones */
   @media (max-width: 768px) {
     .hero-cta-wrap {
       flex-direction: column;
